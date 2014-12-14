@@ -1,7 +1,8 @@
 package com.github.stas145.mnk;
 import com.github.stas145.mnk.*;
+import com.github.stas145.mnk.function.OneVariableFunction;
 
-public class Polynomial {
+public class Polynomial implements OneVariableFunction {
     private int m;
     private double[] monomial;
 
@@ -56,6 +57,23 @@ public class Polynomial {
         
         SystemOfLinearEquations aSLE = new SystemOfLinearEquations(m, A, b);
         monomial = aSLE.gauss();
+    }
+
+    @Override
+    public double getValueAtPoint(double x){
+        double res = 0;
+        for(int i = 0; i < m; i++){
+            res += Math.pow(x, i)*monomial[i];
+        }
+        return res;
+    }
+    @Override
+    public double getValueAtPointIst(double x){
+        double res = 0;
+        for(int i = 0; i < m; i++){
+            res += Math.pow(x, i)*monomial[i];
+        }
+        return res;
     }
 
     public void print() {
