@@ -15,10 +15,9 @@ public class SinFun implements OneVariableFunction {
 
     @Override
     public double getValueAtPointIst(double x) {
-        //return 2*x+1 + (new Random().nextGaussian())/100;
-        //return Math.sin(x) + (new Random().nextGaussian()) / 5;
         //return 4 * Math.pow(x, 4) - 10 * Math.pow(x, 2) + x;
-        return Math.sin(1/x);
+        //return Math.sin(1/x)
+        return 0;
     }
 
 }

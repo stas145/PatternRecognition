@@ -26,11 +26,13 @@ public class ExperimentalData {
 
 	public ExperimentalData(int _n, double[] _x, double[] _y) {
 		n = _n;
+        x = new double[n];
+        y = new double[n];
 		System.arraycopy(_x, 0, x, 0, n);
 		System.arraycopy(_y, 0, y, 0, n);
 	}
 
-	public void randomCreate(int _n, int left_x, int right_x, OneVariableFunction f) {
+	public void randomCreate(int _n, double left_x, double right_x, OneVariableFunction f) {
 		n = _n;
 		x = new double[n];
 		y = new double[n];
