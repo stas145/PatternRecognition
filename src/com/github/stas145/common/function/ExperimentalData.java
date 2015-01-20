@@ -1,6 +1,5 @@
-package com.github.stas145.mnk;
-import com.github.stas145.mnk.function.*;
-import com.github.stas145.mnk.Point2D;
+package com.github.stas145.common.function;
+import com.github.stas145.common.Point2D;
 
 public class ExperimentalData {
     //n sets of Data {x, y} are experimentaly got

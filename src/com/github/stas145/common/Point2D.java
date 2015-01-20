@@ -1,4 +1,4 @@
-package com.github.stas145.mnk;
+package com.github.stas145.common;
 
 public class Point2D {
     private double x;

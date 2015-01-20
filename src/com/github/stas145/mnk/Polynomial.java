@@ -1,6 +1,6 @@
 package com.github.stas145.mnk;
-import com.github.stas145.mnk.*;
-import com.github.stas145.mnk.function.OneVariableFunction;
+import com.github.stas145.common.function.ExperimentalData;
+import com.github.stas145.common.function.OneVariableFunction;
 
 public class Polynomial implements OneVariableFunction {
     private int m;
@@ -96,11 +96,7 @@ public class Polynomial implements OneVariableFunction {
 
     @Override
     public double getValueAtPoint(double x){
-        double res = 0;
-        for(int i = 0; i < m; i++){
-            res += Math.pow(x, i)*monomial[i];
-        }
-        return res;
+        return this.getValueAtPointIst(x);
     }
     @Override
     public double getValueAtPointIst(double x){
@@ -117,15 +113,19 @@ public class Polynomial implements OneVariableFunction {
          }
     }
 
-    public ExperimentalData  buildPolynomialMNKByCrossValidation(ExperimentalData _data, int numPartitions) {
-        int intervalLength = _data.getSize()/numPartitions;
+    public int getOptPowerMNKByCrossValidation(ExperimentalData _data, int numPartitions, int minPower, int maxPower) {
 
-        double testError = Double.MAX_VALUE;
+        int optPower = 1;
+        int[] powerIs = new int[numPartitions];
+        for(int m = 0; m < powerIs.length; m++)
+        {
+            powerIs[m] = 0;
+        }
+        int intervalLength = _data.getSize()/numPartitions;
         double[] xTest = new double[intervalLength];
         double[] yTest = new double[intervalLength];
         double[] xTraining = new double[intervalLength*(numPartitions - 1)];
         double[] yTraining = new double[intervalLength*(numPartitions - 1)];
-        ExperimentalData optData= new ExperimentalData();
 
         for(int i = 0; i < numPartitions; i++) {
             int testDataIndex = 0;
@@ -143,36 +143,31 @@ public class Polynomial implements OneVariableFunction {
             }
             ExperimentalData testData = new ExperimentalData(intervalLength, xTest, yTest);
             ExperimentalData trainingData = new ExperimentalData(intervalLength*(numPartitions - 1), xTraining, yTraining);
-            System.out.print("size:" + trainingData.getSize());
 
-            Polynomial crossValidationPolynomial = new Polynomial(this.m);
-            crossValidationPolynomial.buildPolynomialMNK(trainingData);
-            System.out.print("m: "
-                    + crossValidationPolynomial.m
-                    + " Iterasion "
-                    + i
-                    + ". Error: "
-                    + crossValidationPolynomial.testPolynomial(testData)
-                    + " ? " + testError);
-            if(i == 0) {
-                testError = crossValidationPolynomial.testPolynomial(testData);
-                this.m = crossValidationPolynomial.m;
-                System.arraycopy(crossValidationPolynomial.monomial, 0, this.monomial, 0, crossValidationPolynomial.monomial.length);
-                System.out.print(" <<--! ");
-                optData = new ExperimentalData(intervalLength*(numPartitions - 1), xTraining, yTraining);
-            } else {
-                if (crossValidationPolynomial.testPolynomial(testData) < testError) {
+            int optPowerOnTestData = 0;
+            double testError = Double.MAX_VALUE;
+            for(int p = minPower; p <= maxPower; p++) {
+                Polynomial crossValidationPolynomial = new Polynomial(p);
+                crossValidationPolynomial.buildPolynomialMNK(trainingData);
+                if(p == minPower) {
                     testError = crossValidationPolynomial.testPolynomial(testData);
-                    this.m = crossValidationPolynomial.m;
-                    System.arraycopy(crossValidationPolynomial.monomial, 0, this.monomial, 0, crossValidationPolynomial.monomial.length);
-                    System.out.print(" <<--! ");
-                    optData = new ExperimentalData(intervalLength*(numPartitions - 1), xTraining, yTraining);
+                    optPowerOnTestData = p;
+                } else {
+                    if (crossValidationPolynomial.testPolynomial(testData) < testError) {
+                        testError = crossValidationPolynomial.testPolynomial(testData);
+                        optPowerOnTestData = p;
+                    }
                 }
             }
+            powerIs[i] = optPowerOnTestData;
             System.out.print("\n");
 
         }
-        return optData;
+        for(int m = 0; m < powerIs.length; m++)
+        {
+            System.out.println("Power: " + powerIs[m]);
+        }
+        return 0;
     }
 
     public double testPolynomial(ExperimentalData testData) {
