@@ -41,9 +41,9 @@ public class NeuralNetwork implements OneVariableFunction {
 
     public void builtNeuralNetwork(ExperimentalData _data, double alfa) {
         for(int i = 0; i < this.m + 1; i++) {
-            zeroLayerX[i] = Math.random()*100;
-            zeroLayerConst[i] = Math.random()*100;
-            firstLayer[i] = Math.random()*100;
+            zeroLayerX[i] = Math.random()*100 - 50;
+            zeroLayerConst[i] = Math.random()*100 - 50;
+            firstLayer[i] = Math.random()*100 - 50;
         }
     }
 
@@ -68,7 +68,7 @@ public class NeuralNetwork implements OneVariableFunction {
         return 1/(1 + Math.exp(_x));
     }
 
-    public static void print() {
-        System.out.print("Is network"); //todo
+    public void print() {
+        System.out.print("Is network" + this.m); //todo
     }
 }

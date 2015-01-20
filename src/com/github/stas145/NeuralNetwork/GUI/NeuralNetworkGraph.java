@@ -90,7 +90,8 @@ public class NeuralNetworkGraph extends JPanel implements ActionListener {
         g.drawString("data size: " + sizeExpData, x, y);
         g.drawString("Network nodes: " + numNetworkNodes, x, y + 15);
         g.drawString("center: (" + ox + ", " + oy + ")", x, y + 30);
-        NeuralNetwork.print();
+        network.print();
+
 
     }
     public void generateExpData() {

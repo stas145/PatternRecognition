@@ -95,7 +95,7 @@ public class ControlPan extends JPanel implements ActionListener {
         expData.addActionListener(this);
 
         network = new JCheckBox("network");
-        network.setSelected(true);
+        network.setSelected(false);
         network.addActionListener(this);
 
         originFun = new JCheckBox("origin function");
